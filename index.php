@@ -10,7 +10,7 @@
 
 //$subString = readline();
 //
-//$str_array = [
+//$baseArray = [
 //    'Purple is a color',
 //    'a mix of blue and red',
 //    'Purple is my teddy-bear',
@@ -21,43 +21,42 @@
 //    'sparkling in a ring'
 //];
 //
-//$a_array = [];
-//$b_array = [];
+//$aArray = [];
+//$bArray = [];
 //
-//foreach ($str_array as $str) {
-//    (str_contains($str, $subString)) ? $a_array[] = $str : $b_array[] = $str;
+//foreach ($baseArray as $str) {
+//    (str_contains($str, $subString)) ? $aArray[] = $str : $bArray[] = $str;
 //}
 //
-//var_dump($a_array);
-//var_dump($b_array);
+//var_dump($aArray);
+//var_dump($bArray);
 
 /**
  * Основы PHP Task_2
  * Реализовать алгоритм сортировки массива.
  */
 
-//$int_array = [1,2,3,10,7,8,6,4,5];
+//$array = [1,2,3,10,7,8,6,4,5];
 //
 //echo "Before sort: \n";
-//var_dump($int_array);
+//var_dump($array);
 //
-//for ($i = 0; $i < count($int_array) - 1; $i++) {
-//    for ($j = 0; $j < count($int_array) - $i - 1; $j++) {
-//        if ($int_array[$j] > $int_array[$j + 1]) {
-//            swap($int_array[$j], $int_array[$j + 1]);
+//for ($i = 0; $i < count($array) - 1; $i++) {
+//    for ($j = 0; $j < count($array) - $i - 1; $j++) {
+//        if ($array[$j] > $array[$j + 1]) {
+//            swap($array[$j], $array[$j + 1]);
 //        }
 //    }
 //}
 //
-//function swap(int &$first_num, int &$second_num) : void
-//{
-//    $tmp = $first_num;
-//    $first_num = $second_num;
-//    $second_num = $tmp;
+//function swap(int &$firstNum, int &$secondNum) : void {
+//    $tmp = $firstNum;
+//    $firstNum = $secondNum;
+//    $secondNum = $tmp;
 //}
 //
 //echo "After sort: \n";
-//var_dump($int_array);
+//var_dump($array);
 
 /**
  * Основы PHP Task_3
@@ -72,8 +71,8 @@
  * Если пользователь оказался женского пола по методу нашего героя, выведите “Girl!” (без кавычек), иначе, выведите «Boy!».
  */
 
-//function createUserName (int $min, int $max) : string
-//{
+//function createUserName (int $min, int $max) : string {
+//
 //    $latinAlphabet = 'abcdefghijklmnopqrstuvwxyz';
 //    $length = rand($min, $max);
 //
@@ -89,13 +88,13 @@
 //$isGirl = 'Girl!';
 //$isBoy = 'Boy!';
 //
-//$minLength = 5;
-//$maxLength = 7;
+//$minLength = 10;
+//$maxLength = 100;
 //
-//$uniqueSymbolsMode = 3;
+//const UNIQUE_SYMBOLS_MODE = 3;
 //
 //$userName = createUserName($minLength, $maxLength);
-//$uniqueSymbolsCount = strlen(count_chars($userName, $uniqueSymbolsMode));
+//$uniqueSymbolsCount = strlen(count_chars($userName, UNIQUE_SYMBOLS_MODE));
 //
 //echo "\nUsername: " . $userName .
 //     "\nUsername all symbols count: " . strlen($userName)  .
