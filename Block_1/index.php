@@ -71,39 +71,39 @@
  * Если пользователь оказался женского пола по методу нашего героя, выведите “Girl!” (без кавычек), иначе, выведите «Boy!».
  */
 
-//function createUserName (int $min, int $max) : string {
-//
-//    $latinAlphabet = 'abcdefghijklmnopqrstuvwxyz';
-//    $length = rand($min, $max);
-//
-//    $randomUserName = '';
-//
-//    for ($i = 0; $i < $length; $i++) {
-//        $randomUserName .= $latinAlphabet[ rand(0, strlen($latinAlphabet) - 1) ];
-//    }
-//
-//    return $randomUserName;
-//}
-//
-//$isGirl = 'Girl!';
-//$isBoy = 'Boy!';
-//
-//$minLength = 10;
-//$maxLength = 100;
-//
-//const UNIQUE_SYMBOLS_MODE = 3;
-//
-//$userName = createUserName($minLength, $maxLength);
-//$uniqueSymbolsCount = strlen(count_chars($userName, UNIQUE_SYMBOLS_MODE));
-//
-//echo "\nUsername: " . $userName .
-//     "\nUsername all symbols count: " . strlen($userName)  .
-//     "\nUsername unique symbols count: " . $uniqueSymbolsCount .
-//     "\n";
-//
-//$result = ($uniqueSymbolsCount % 2 == 0) ? $isGirl : $isBoy;
-//
-//echo  $result;
+function createUserName (int $min, int $max) : string {
+
+    $latinAlphabet = 'abcdefghijklmnopqrstuvwxyz';
+    $length = rand($min, $max);
+
+    $randomUserName = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomUserName .= $latinAlphabet[ rand(0, strlen($latinAlphabet) - 1) ];
+    }
+
+    return $randomUserName;
+}
+
+$isGirl = 'Girl!';
+$isBoy = 'Boy!';
+
+$minLength = 10;
+$maxLength = 100;
+
+const UNIQUE_SYMBOLS_MODE = 3;
+
+$userName = createUserName($minLength, $maxLength);
+$uniqueSymbolsCount = strlen(count_chars($userName, UNIQUE_SYMBOLS_MODE));
+
+echo "\nUsername: " . $userName .
+     "\nUsername all symbols count: " . strlen($userName)  .
+     "\nUsername unique symbols count: " . $uniqueSymbolsCount .
+     "\n";
+
+$result = ($uniqueSymbolsCount % 2 == 0) ? $isGirl : $isBoy;
+
+echo  $result;
 
 
 
