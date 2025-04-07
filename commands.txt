@@ -5,3 +5,5 @@ docker-compose up 		- Запуск всех сервисов (контейнер
 docker-compose down 		- Остановка и удаление сервисов (контейнеров) из docker-compose.yml
 docker-compose build 		- Cборка контейнеров 
 docker logs ..container_name..  - посмотреть логи определенного контейнера
+
+git restore 			- вернет в состояние последнего коммита

@@ -21,7 +21,7 @@ function getPeriodByAge(int $age): string {
 }
 
 $name = htmlspecialchars($_POST["name"]);
-$age = (int)$_POST["age"]; // обязательно приводим к числу
+$age = (int)$_POST["age"];
 
 if ($age <= Age::ZERO->value) {
     echo "Возраст должен быть больше нуля.";
