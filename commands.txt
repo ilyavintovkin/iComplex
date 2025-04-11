@@ -1,9 +1,10 @@
 ip addr show eth0 | grep inet | awk '{print $2;}' | sed 's/\/.*$//' - показать IP-адрес сервера
 
-docker ps 			- Список запущенных контейнеров
-docker-compose up 		- Запуск всех сервисов (контейнеров) из docker-compose.yml
-docker-compose down 		- Остановка и удаление сервисов (контейнеров) из docker-compose.yml
-docker-compose build 		- Cборка контейнеров 
-docker logs ..container_name..  - посмотреть логи определенного контейнера
+docker ps 				   - Список запущенных контейнеров
+docker-compose up 			   - Запуск всех сервисов (контейнеров) из docker-compose.yml
+docker-compose down 			   - Остановка и удаление сервисов (контейнеров) из docker-compose.yml
+docker-compose build 			   - Cборка контейнеров 
+docker logs ..container_name..  	   - посмотреть логи определенного контейнера
+docker exec -it mysql_mvc mysql -u root -p - зайти в mysql-cli
 
 git restore 			- вернет в состояние последнего коммита
