@@ -1,0 +1,154 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Шапка и меню */
+.menu {
+    background-color: #130035;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.menu ul li {
+    margin: 0 20px;
+}
+
+.menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.menu ul li a:hover {
+    color: #b57bff;
+}
+
+/* Формы */
+form {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    text-align: center;
+}
+
+form input,
+form textarea,
+form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+form input,
+form textarea {
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #130035;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #3c0093;
+}
+
+form input:focus,
+form textarea:focus {
+    border-color: #130035;
+}
+
+/* Стили для постов */
+.post {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.post:hover {
+    transform: scale(1.02);
+}
+
+.post strong {
+    font-size: 18px;
+    color: #130035;
+}
+
+.post p {
+    font-size: 16px;
+    color: #555;
+}
+
+.post small {
+    display: block;
+    margin-top: 10px;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Успешное сообщение */
+.success-message {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tel {
+    padding: 20px;
+    text-align: center;
+}
+
+.img_block {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Чтобы картинки и текст не выходили за пределы блока */
+}
+
+.img_item {
+    text-align: center; /* Чтобы надпись была по центру относительно картинки */
+    margin-bottom: 20px; /* Отступ между картинками */
+}
+
+.img_item img {
+    width: 300px; /* Ширина изображений */
+    height: auto; /* Высота пропорциональна ширине */
+}
+
+.image-caption {
+    font-style: italic; /* Курсив */
+    color: #555; /* Цвет текста */
+    margin-top: 10px; /* Отступ между картинкой и текстом */
+    font-size: 20px; /* Размер шрифта */
+}
