@@ -8,7 +8,7 @@
 		<title>Clining service</title>
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
 		<link href="http://fonts.googleapis.com/css?family=Kreon" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/stylemvc.css" />
 
 		<script type="text/javascript">
 		// return a random integer between 0 and number
@@ -32,7 +32,7 @@
 		<div id="wrapper">
 			<div id="header">
 				<div id="logo">
-					<a href="/">Мойдодыр</span></a>
+					<a href="/">CleanClean</span></a>
 				</div>
 				<div id="menu">
 					<ul>
@@ -91,7 +91,7 @@
 			</div>
 		</div>
 		<div id="footer">
-			<a href="/">МОЙДОДЫР</a> &copy; 2025</a>
+			<a href="/">CleanClean</a> &copy; 2025</a>
 		</div>
 	</body>
 </html>
