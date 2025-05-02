@@ -8,6 +8,7 @@
     <title>@yield('title-block')</title>
 
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 <div class="menu">
@@ -20,6 +21,6 @@
 </div>
 
  @yield('content')
-
+ @vite(['resources/js/app.js', 'resources/css/app.css'])
 </body>
 </html>

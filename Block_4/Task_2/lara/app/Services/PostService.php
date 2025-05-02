@@ -6,7 +6,7 @@ use App\Models\Post;
 class PostService
 {
     public function getPosts() {
-        return Post::latest()->get();
+        return Post::get();
     }
     public function createPost($author, $message)
     {

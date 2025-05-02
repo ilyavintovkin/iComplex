@@ -33,4 +33,18 @@ class PostController extends Controller
 
         return redirect()->back()->with('success', 'Пост добавлен!');
     }
+
+    public function delete($id) {
+        
+        $post = Post::findOrFail($id);
+        $post->delete();
+    
+        return response()->json(['message' => 'Пост удалён']);
+    }
+
+    public function Updated()    
+    {
+        $posts = $this->postService->getPosts();
+        return view('updated', compact('posts'));
+    }
 }

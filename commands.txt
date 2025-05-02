@@ -8,3 +8,7 @@ docker logs ..container_name..  	   - посмотреть логи опреде
 docker exec -it mysql_mvc mysql -u root -p - зайти в mysql-cli
 
 git restore 			- вернет в состояние последнего коммита
+npm run dev			- запустит локальный сервер который следит за изменениями файлов и автоматически обновляет страницу в браузере.
+node pt.js			- запустить скрипт js ( pt.js - пример )
+php artisan route:list		- посмотреть доступные маршруты
+php artisan serve --host=localhost --port=8000 - запуск laravel на 8000 порту
