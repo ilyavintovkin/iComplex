@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'paths' => ['api/*'],
-    'allowed_origins' => ['http://localhost:3002'], // Адрес твоего Nuxt-приложения
-    'allowed_methods' => ['*'],
-    'allowed_headers' => ['*'],
-    'exposed_headers' => [],
-    'max_age' => 0,
-    'supports_credentials' => false,
+    'paths' => ['api/*'], // означает: CORS будет применяться ко всем маршрутам
+    'allowed_origins' => ['http://localhost:3002'], // Список разрешённых источников (доменов). Только 1 может делать запрос на api
+    'allowed_methods' => ['*'], // Указание, какие HTTP-методы разрешены
+    'allowed_headers' => ['*'], // Указание, какие заголовки может отправлять клиент
+    'exposed_headers' => [], // Заголовки, которые будут доступны на стороне клиента
+    'max_age' => 0, // Время (в секундах), на которое браузер может кэшировать CORS-проверку (preflight). 0 — означает, что кэширование отключено
+    'supports_credentials' => false, // Разрешать ли отправку cookies, токенов, HTTP-авторизации и прочих credentials.
 ];

@@ -38,8 +38,12 @@ onBeforeUnmount(() => {
   <div v-else>
     <h2>Моя лента</h2>
     <div v-for="post in data" :key="post.id" class="post">
-      <small>Автор: {{ post.user.nickname }} <br> Дата: {{ post.created_at.slice(0, 10) }}</small>
-      <p>{{ post.message }}</p>
+
+      <div class="content">
+        <small>Автор: {{ post.user.nickname }} <br> Дата: {{ post.created_at.slice(0, 10) }}</small>
+        <p>{{ post.message }}</p>
+      </div>
+      
     </div>
   </div>
 </template>

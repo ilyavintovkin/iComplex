@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Log;
-use App\Models;
-use App\Models\Hashtag;
-use App\Models\PostHashtag;
-use App\Models\Mention;
 use App\Models\User;
 use App\Services\PostService;
 use Illuminate\Http\Request;
-use Laravel\Pail\ValueObjects\Origin\Console;
 
 class PostController extends Controller
 {
@@ -20,108 +14,50 @@ class PostController extends Controller
     {
         $this->postService = $postService;
     }
-    // создание нового поста
+    
+    // Создание нового поста 
     public function createPost(Request $request)
     {
-        $data = $request->only(['user_id', 'message']); // Извлекаем нужные поля
-        $hastagsAndMentions = $this->extractMentionsAndHashtags($data['message']);
+        $data = $request->only(['user_id', 'message']); // извлечение нужных полей
+        $hastagsAndMentions = extract_mentions_and_hashtags($data['message']); // извлечение отметок, хэштегов из сообщения
 
-        // Создаём пост
-        $post = $this->postService->createPost($data);
+        $post = $this->postService->createPost($data); // Создание поста
 
-        // После создания поста, сохраняем упоминания и хэштеги
-        $this->storeMentions($hastagsAndMentions['mentions'], $post->id);  // Сохраняем упоминания
-        $this->storeHashtags($hastagsAndMentions['hashtags'], $post->id);  // Сохраняем хэштеги
+        store_mentions_and_hashtags($hastagsAndMentions, $post->id);  // Сохраняем упоминания и хэштеги 
 
         return response()->json($post);  // Возвращаем созданный пост
     }
 
+    // Метод отображающий ленту текущего пользователя
     public function getLenta()
     {
-        $userId = 1; // в будущем можно получать из авторизации
-
-        // Получаем два набора постов
-        $ownPosts = $this->postService->getPostsByUserId($userId);
-        $mentionedPosts = $this->postService->getPostsByMention($userId);
-
-        // Объединяем и удаляем дубликаты по ID постов
-        $mergedPosts = $ownPosts->merge($mentionedPosts)->unique('id')->values();
-        // Объединяем, удаляем дубликаты и сортируем по дате
-        $mergedPosts = $ownPosts
-            ->merge($mentionedPosts)
-            ->unique('id')
-            ->sortByDesc('created_at')
-            ->values(); // сбрасываем ключи
-            
-        return response()->json($mergedPosts);
+        $userId = 2; // ID пользователя (для кого будет отображена лента)
+    
+        $ownAndMentionedPosts = $this->postService->getPostsByUserIdAndMention($userId); // получение постов по user_id и упоминания этого user-a
+        $sortedPosts = filter_and_sort_posts($ownAndMentionedPosts, 5); // сортировка и ограничение кол-ва постов
+    
+        return response()->json($sortedPosts);
     }
-
-
-    //_________________________________________________________________________
-    public function extractMentionsAndHashtags(string $message): array
-    {
-        // Извлекаем @nickname
-        preg_match_all('/@([\w\d_]+)/u', $message, $userMatches);
-        $mentionedNicknames = $userMatches[1];
-
-        // Извлекаем #hashtag
-        preg_match_all('/#([\p{L}\d_]+)/u', $message, $tagMatches);
-        $hashtags = $tagMatches[1];
-
-        return [
-            'mentions' => $mentionedNicknames,
-            'hashtags' => $hashtags,
-        ];
-    }
-
-    private function storeMentions(array $nicknames, int $postId): void
-    {
-        foreach ($nicknames as $nickname) {
-            $user = User::where('nickname', $nickname)->first();
-            if ($user) {
-                Mention::create([
-                    'post_id' => $postId,
-                    'mentioned_user_id' => $user->id,
-                ]);
-            }
-        }
-    }
-
-    private function storeHashtags(array $tagNames, int $postId): void
-    {
-        foreach ($tagNames as $tagName) {
-            $hashtag = Hashtag::firstOrCreate(['name' => $tagName]);
-            PostHashtag::create([
-                'post_id' => $postId,
-                'hashtag_id' => $hashtag->id,
-            ]);
-        }
-    }
-
+    
+    // Получение постов по хэштегу
     public function getPostsByHashtag(string $tag)
     {
-        $posts = $this->postService->getPostsByHashtag($tag);
+        $posts = $this->postService->getPostsByHashtag($tag); // Получение постов по хэштегу
 
         return response()->json($posts);
     }
+
+    // Получение постов по user->nickname
     public function getPostsByUserNickname(string $nickname)
     {
-        Log::info('Поиск по нику: ' . $nickname);
+        $user = User::where('nickname', $nickname)->first(); // нахождение пользователя по nickname
 
-        $user = User::where('nickname', $nickname)->first();
-
-        if (!$user) {
-            Log::warning("Пользователь не найден: $nickname");
+        if (!$user) { // проверка, что пользователь существует
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        Log::info("Найден пользователь: " . $user->id);
+        $postsByUserIdAndMention = $this->postService->getPostsByUserIdAndMention($user->id);  // получение постов по user_id и упоминания этого user-a
 
-        $ownPosts = $this->postService->getPostsByUserId($user->id);
-        $mentionedPosts = $this->postService->getPostsByMention($user->id);
-
-        $mergedPosts = $ownPosts->merge($mentionedPosts)->unique('id')->values();
-
-        return response()->json($mergedPosts);
+        return response()->json($postsByUserIdAndMention->values()->toArray()); // обнуление и приведение к array
     }
 }

@@ -8,3 +8,4 @@ php artisan make:migration create_mentions_table
 php artisan make:migration create_follows_table
 
 npx nuxt dev --port 3002 - запуск nuxt на 3002 порту
+

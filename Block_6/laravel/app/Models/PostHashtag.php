@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class PostHashtag extends Model
 {
-    protected $table = 'post_hashtag';
+    protected $table = 'post_hashtag'; // указание таблицы, с которой будет работать данная модель
     
-    protected $fillable = ['post_id', 'hashtag_id'];
+    protected $fillable = ['post_id', 'hashtag_id']; // указание какие поля можно заполнять массово
 
-    public $timestamps = false; // если таблица не содержит created_at и updated_at
+    public $timestamps = false; //  отмена автоматичесого назначение created_at, updated_at
 }
