@@ -1,27 +1,33 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref } from 'vue';
+import axios from 'axios';
 
-const data = ref(null)
-const error = ref(null)
-const loading = ref(true)
+const nickname = ref('');
+const posts = ref([]);
 
-onMounted(async () => {
+const searchPosts = async () => {
+  if (!nickname.value.trim()) return;
+
   try {
-    const response = await axios.get('http://localhost:8000/api/hello')
-    data.value = response.data
-  } catch (err) {
-    error.value = err
-  } finally {
-    loading.value = false
+    // Исправленный endpoint для поиска постов по никнейму
+    const response = await axios.get(`http://localhost:8000/api/${nickname.value}`);
+    posts.value = response.data;
+  } catch (error) {
+    console.error('Ошибка при получении постов:', error);
   }
-})
+};
 </script>
 
 <template>
-  <div v-if="loading">Загрузка...</div>
-  <div v-else-if="error">Ошибка: {{ error.message }}</div>
-  <div v-else>
-    <h1>{{ data.message }}</h1>
+  <div>
+    <input v-model="nickname" @keyup.enter="searchPosts" placeholder="Введите никнейм" />
+    <button @click="searchPosts">Найти посты</button>
+
+    <div v-if="posts.length">
+      <div v-for="post in posts" :key="post.id">
+        <small>Автор: {{ post.user?.nickname}} <br> Дата: {{ post.created_at.slice(0, 10) }}</small>
+        <p>{{ post.message }}</p>
+      </div>
+    </div>
   </div>
 </template>

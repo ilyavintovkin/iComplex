@@ -2,22 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory;
+    // Заполняемые поля
+    protected $fillable = ['user_id', 'message'];
 
-    // Запрещаем массовое присваивание всех атрибутов по умолчанию
-    protected $guarded = [];
-
-    // Разрешаем массовое присваивание этих полей
-    protected $fillable = ['user_id', 'text'];
-
-    // Связь "пост принадлежит пользователю"
+    // Эта функция определяет связь "Один к Многим" между моделями Post и User
     public function user()
     {
         return $this->belongsTo(User::class);
+        // $post = Post::find(1); 
+        // $user = $post->user; к примеру могу получить user-а у поста
+    }
+    public function mentions()
+    {
+        return $this->hasMany(Mention::class);
+    }
+
+    public function hashtags()
+    {
+        return $this->belongsToMany(Hashtag::class, 'post_hashtag');
     }
 }
