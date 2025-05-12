@@ -70,7 +70,7 @@ if (!function_exists('store_mentions_and_hashtags')) {
 // Принимает запрос Query
 if (!function_exists('get_recent_posts')) {
 
-    function get_recent_posts($query, array $with = ['user'], int $limit = 5)
+    function get_recent_posts($query, array $with = ['user'], int $limit = 30)
     {
         return $query->with($with)
             ->orderBy('created_at', 'desc') // сортировка по убыванию даты создания
@@ -82,7 +82,7 @@ if (!function_exists('get_recent_posts')) {
 // Принимает коллекцию
 if (!function_exists('filter_and_sort_posts')) {
     
-    function filter_and_sort_posts($posts, int $limit = 5)
+    function filter_and_sort_posts($posts, int $limit = 30)
     {
         return $posts
             ->unique('id') // чтобы не было дубликатов по id
@@ -94,7 +94,7 @@ if (!function_exists('filter_and_sort_posts')) {
 // Принимает две коллекции и обьединяет их
 if (!function_exists('merge_and_sort_posts')) {
 
-    function merge_and_sort_posts($collection1, $collection2, int $limit = 5)
+    function merge_and_sort_posts($collection1, $collection2, int $limit = 30)
     {
         return $collection1
             ->merge($collection2)         // объединяем коллекции $collection1, $collection2

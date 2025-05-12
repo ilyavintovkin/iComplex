@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\Follow;
 use App\Models\User;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 
+// Контроллер постов
 class PostController extends Controller
 {
-    private PostService $postService;
+    private PostService $postService; // сервис постов
 
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
     }
-    
+
     // Создание нового поста 
     public function createPost(Request $request)
     {
@@ -28,15 +31,19 @@ class PostController extends Controller
         return response()->json($post);  // Возвращаем созданный пост
     }
 
-    // Метод отображающий ленту текущего пользователя
+    // Полученине постов для своей ленты
     public function getLenta()
     {
-        $userId = 2; // ID пользователя (для кого будет отображена лента)
+        $current_user_id = 1; // ID текущего пользователя (чью ленту показывать?)
     
-        $ownAndMentionedPosts = $this->postService->getPostsByUserIdAndMention($userId); // получение постов по user_id и упоминания этого user-a
-        $sortedPosts = filter_and_sort_posts($ownAndMentionedPosts, 5); // сортировка и ограничение кол-ва постов
+        $ownAndMentionedPosts = $this->postService->getPostsByUserIdAndMention($current_user_id);// Получаем посты по user_id и упоминаниям
+        $followedPosts = $this->postService->getPostsByFollowing($current_user_id);// Получаем посты от пользователей, на которых подписан текущий пользователь
     
-        return response()->json($sortedPosts);
+        $allPosts = merge_and_sort_posts($ownAndMentionedPosts, $followedPosts);// Объединяем оба массива постов
+    
+        $sortedPosts = filter_and_sort_posts($allPosts, 30);// Ограничиваем кол-во и сортируем по дате
+    
+        return response()->json($sortedPosts); 
     }
     
     // Получение постов по хэштегу
@@ -49,15 +56,28 @@ class PostController extends Controller
 
     // Получение постов по user->nickname
     public function getPostsByUserNickname(string $nickname)
-    {
+    {   
+        $current_user_id = 3; // ID текущего пользователя (чьи подписки смотреть?)
+
         $user = User::where('nickname', $nickname)->first(); // нахождение пользователя по nickname
 
         if (!$user) { // проверка, что пользователь существует
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'User not found']);
         }
 
-        $postsByUserIdAndMention = $this->postService->getPostsByUserIdAndMention($user->id);  // получение постов по user_id и упоминания этого user-a
+        $postsByUserIdAndMention = $this->postService->getPostsByUserIdAndMention($user->id, $current_user_id);  // получение постов по user_id и упоминания этого user-a
 
         return response()->json($postsByUserIdAndMention->values()->toArray()); // обнуление и приведение к array
+    }
+
+    // Получение постов по подписке (На кого подписан пользователь - тех пользователей посты и получаем)
+    public function getPostsByFollow()
+    {
+        $user = User::find(1); // Получаю пользователя с id === 1
+        
+        $followedUsers = $user->following;  // Получение всех пользователей, на которых подписан текущий пользователь
+        $posts = Post::whereIn('user_id', $followedUsers->pluck('id'))->get();// Получаем все посты от этих пользователей
+
+        return response()->json($posts);
     }
 }
