@@ -15,7 +15,7 @@ class PostService
     }
 
     // Получение постов по user_id
-    public function getPostsByUserId(int $userId = 1)
+    public function getPostsByUserId(int $userId = 3)
     {
         $query = Post::where('user_id', $userId); // получение постов по определенному userId 
 
@@ -58,7 +58,7 @@ class PostService
         return $posts;
     }
 
-    public function getPostsByFollowing(int $currentUserId = 1)
+    public function getPostsByFollowing(int $currentUserId = 3)
     {
         // Получаем ID пользователей, на которых подписан текущий пользователь
         $followingIds = Follow::where('follower_id', $currentUserId)
@@ -77,7 +77,7 @@ class PostService
     }
 
     // Получение постов по user_id ( 1 ) и отметкам ( @tim )
-    public function getPostsByUserIdAndMention(int $user_id, int $currentUserId = 1)
+    public function getPostsByUserIdAndMention(int $user_id, int $currentUserId = 3)
     {
         $ownPosts = $this->getPostsByUserId($user_id); // отдельное получение постов по user_id
         $mentionedPosts = $this->getPostsByMention($user_id); // отдельное получение постов по отметкам ( @tim )

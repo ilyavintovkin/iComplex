@@ -21,6 +21,11 @@ class PostController extends Controller
     // Создание нового поста 
     public function createPost(Request $request)
     {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'message' => 'required|string|max:280',
+        ]);
+
         $data = $request->only(['user_id', 'message']); // извлечение нужных полей
         $hastagsAndMentions = extract_mentions_and_hashtags($data['message']); // извлечение отметок, хэштегов из сообщения
 
@@ -34,18 +39,18 @@ class PostController extends Controller
     // Полученине постов для своей ленты
     public function getLenta()
     {
-        $current_user_id = 1; // ID текущего пользователя (чью ленту показывать?)
-    
-        $ownAndMentionedPosts = $this->postService->getPostsByUserIdAndMention($current_user_id);// Получаем посты по user_id и упоминаниям
-        $followedPosts = $this->postService->getPostsByFollowing($current_user_id);// Получаем посты от пользователей, на которых подписан текущий пользователь
-    
-        $allPosts = merge_and_sort_posts($ownAndMentionedPosts, $followedPosts);// Объединяем оба массива постов
-    
-        $sortedPosts = filter_and_sort_posts($allPosts, 30);// Ограничиваем кол-во и сортируем по дате
-    
-        return response()->json($sortedPosts); 
+        $current_user_id = 3; // ID текущего пользователя (чью ленту показывать?)
+
+        $ownAndMentionedPosts = $this->postService->getPostsByUserIdAndMention($current_user_id); // Получаем посты по user_id и упоминаниям
+        $followedPosts = $this->postService->getPostsByFollowing($current_user_id); // Получаем посты от пользователей, на которых подписан текущий пользователь
+
+        $allPosts = merge_and_sort_posts($ownAndMentionedPosts, $followedPosts); // Объединяем оба массива постов
+
+        $sortedPosts = filter_and_sort_posts($allPosts, 30); // Ограничиваем кол-во и сортируем по дате
+
+        return response()->json($sortedPosts);
     }
-    
+
     // Получение постов по хэштегу
     public function getPostsByHashtag(string $tag)
     {
@@ -56,7 +61,7 @@ class PostController extends Controller
 
     // Получение постов по user->nickname
     public function getPostsByUserNickname(string $nickname)
-    {   
+    {
         $current_user_id = 3; // ID текущего пользователя (чьи подписки смотреть?)
 
         $user = User::where('nickname', $nickname)->first(); // нахождение пользователя по nickname
@@ -73,10 +78,12 @@ class PostController extends Controller
     // Получение постов по подписке (На кого подписан пользователь - тех пользователей посты и получаем)
     public function getPostsByFollow()
     {
-        $user = User::find(1); // Получаю пользователя с id === 1
-        
+        $current_user_id = 3;
+
+        $user = User::find($current_user_id); // Получаю пользователя с id === 3
+
         $followedUsers = $user->following;  // Получение всех пользователей, на которых подписан текущий пользователь
-        $posts = Post::whereIn('user_id', $followedUsers->pluck('id'))->get();// Получаем все посты от этих пользователей
+        $posts = Post::whereIn('user_id', $followedUsers->pluck('id'))->get(); // Получаем все посты от этих пользователей
 
         return response()->json($posts);
     }
