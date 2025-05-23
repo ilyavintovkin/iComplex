@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Follow;
-use App\Models\User;
 use App\Services\FollowService;
 use Illuminate\Http\Request;
 

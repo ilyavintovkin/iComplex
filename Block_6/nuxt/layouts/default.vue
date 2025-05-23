@@ -3,7 +3,7 @@ import { ref } from 'vue' // импорт функции ref(). использу
 import axios from 'axios' // библиотека axios (библиотека HTTP запросов)
 
 const message = ref('') // создание реактивной переменной (будет хранить текст, вводимый пользователем при создании поста)
-const currentUserId = 3; // id текущего пользователя (кто будет выкладывать новый пост?)
+const currentUserId = 4; // id текущего пользователя (кто будет выкладывать новый пост?)
 // Функция для форматирования даты
 const formatDate = (dateString) => { // функция форматирования даты
   const date = new Date(dateString);

@@ -35,7 +35,7 @@ const formatDate = (dateString) => { // функция форматирован�
         <FollowButton
           :currentUserId="currentUserId" 
           :targetUserId="post.user.id"
-          :initialIsFollowing="post.is_following"
+          :initialIsFollowing="Boolean(post.is_following)"
           :onFollowChange="onFollowChange"
         />
       </div>

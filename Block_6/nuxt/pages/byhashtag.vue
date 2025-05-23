@@ -3,16 +3,17 @@ import { ref } from 'vue' // импорт функции ref(). использу
 import axios from 'axios' // библиотека axios (библиотека HTTP запросов)
 import PostList from '@/components/PostList.vue'
 
-const currentUserId= ref(3); // создание реактивной переменной (будет хранить вводимый 
+const currentUserId= ref(4); // создание реактивной переменной (будет хранить вводимый 
 const posts = ref([]); // создание реактивной переменной (будет хранить посты)
 const searched = ref(false) // флаг, был ли выполнен поиск
+const loading = ref(false)
 
 const hashtag = ref('') // создание реактивной переменной (будет хранить вводимый пользователем хэштег )
 
 const searchByHashtag = async () => {  // асинхронная функция, вызываемая при нажатии на кнопку "найти посты по хэштегу".
   if (!hashtag.value.trim()) return  // проверка на пустоту message
   const tag = hashtag.value.replace(/^#/, '') // удаление # если пользователь ввел его
-
+  loading.value = true;
   try {
     const response = await axios.get(`http://localhost:8000/api/hash/${tag}`); // GET-запрос на api. Получение определенных постов по введенному хэштегу ${tag}
     posts.value = response.data // присваиваю в реактивную переменную все посты полученные по запросу на api.
@@ -20,6 +21,7 @@ const searchByHashtag = async () => {  // асинхронная функция,
     console.error('Ошибка при получении постов:', error) // вывод сообщения ошибки
   } finally {
     searched.value = true; // т.к. была нажата кнопка - значит был выполнен поиск.
+    loading.value = false;
   }
 }
 </script>
@@ -31,7 +33,9 @@ const searchByHashtag = async () => {  // асинхронная функция,
 
     <div v-if="posts.length"> <!-- проверка, что кол-во постов в массиве > 0-->
       <h2>Посты по хэштегу "#{{ hashtag }}"</h2> <!-- вывод заголовка-->
-      <!-- "посылаем" массив в PostList-->
+
+      <div v-if="loading" class="preloader"></div>
+
       <PostList 
         :posts="posts"
         :currentUserId="currentUserId"

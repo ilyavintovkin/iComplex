@@ -3,19 +3,19 @@ import { ref, onMounted, onBeforeUnmount } from 'vue' // подключение 
 import axios from 'axios' // подключение axios ( для запросов)
 import FollowButton from '@/components/FollowButton.vue' // подключение компонента FollowButton - для отображения кнопки
 
-const currentUserId = ref(3) // Реактивная переменная. Id текущего пользователя
+const currentUserId = ref(4) // Реактивная переменная. Id текущего пользователя
 const posts = ref([]) // реактивная переменная (будет хранить посты для отображения)
-const loading = ref(true) // реактивная переменная-флаг - пока посты грузятся = true
+const loading = ref(true);
 
 const loadPosts = async () => { // функция получения постов 
-  loading.value = true // пока грузится флаг загрузки = true
+  loading.value = true;
   try {
-    const response = await axios.get('http://localhost:8000/api/lenta') // запрос на Api, для получения постов
-    posts.value = response.data // присваивание реактивной переменной posts - постов, пришедших с api
-  } catch (error) { //возможный отлов ошибок
+    const response = await axios.get('http://localhost:8000/api/lenta')
+    posts.value = response.data
+  } catch (error) {
     console.error('Ошибка при получении постов:', error)
   } finally {
-    loading.value = false // после загрузки флаг загрузки становится false
+    loading.value = false;
   }
 }
 
@@ -44,30 +44,31 @@ const formatDate = (dateString) => { // функция форматирован�
 </script>
 
 <template>
-  <div v-if="loading">Загрузка...</div>
-  <div v-else>
     <h2>Моя лента</h2>
+       <div v-if="loading" class="preloader"></div>
+
     <div v-for="post in posts" :key="post.id" class="post">
+   
       <div class="content">
         <small> Автор: {{ post.user.nickname }} <br> Дата: {{ formatDate(post.created_at) }}</small>
         <p>{{ post.message }}</p>
 
         <!-- Кнопка подписки — через компонент -->
-        <div v-if="currentUserId !== post.user.id">
+        <div v-if="currentUserId !== post.user_id">
           <FollowButton
             :currentUserId="currentUserId"
             :targetUserId="post.user.id"
-            :initialIsFollowing="post.is_following"
+            :initialIsFollowing="Boolean(post.is_following)"
             :onFollowChange="loadPosts"
           />
         </div>
         
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped>
+
 .content {
   border: 1px solid #ddd;
   padding: 15px;
@@ -88,6 +89,27 @@ const formatDate = (dateString) => { // функция форматирован�
 .post-card p {
   margin: 10px 0;
 }
+
+.preloader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.preloader::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
-
-

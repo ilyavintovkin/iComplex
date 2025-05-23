@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
+use App\Tmp\CurrentUser;
+
+abstract class Controller extends CurrentUser
 {
     //
 }
